@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Be My Galentine 🤞</title>
+
+<style>
+* {
+box-sizing: border-box;
+font-family: "Comic Sans MS", cursive, sans-serif;
+-webkit-tap-highlight-color: transparent;
+}
+
+body {
+margin: 0;
+height: 100vh;
+background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+}
+
+.card {
+background: #fff;
+padding: 40px 30px;
+border-radius: 20px;
+width: 320px;
+text-align: center;
+box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+z-index: 2;
+}
+
+h1 {
+color: #e75480;
+margin-bottom: 20px;
+font-weight: 700;
+}
+
+.heart {
+font-size: 32px;
+margin-bottom: 25px;
+animation: beat 1s infinite;
+}
+
+@keyframes beat {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.2); }
+}
+
+.buttons {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 20px;
+}
+
+button {
+  border: none;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-size: 16px;
+
+  /* 🔥 ADD / ENSURE THESE */
+  font-weight: 700;
+  font-style: normal;
+  color: #000;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+
+  cursor: pointer;
+  white-space: nowrap;
+  background: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-text-fill-color: #000; /* iOS fix */
+  transition: transform 0.15s;
+}
+
+
+#yes {
+background: #e75480;
+color: #fff;
+}
+
+#no {
+background: #e0e0e0;
+color: #000;
+min-width: 95px;
+}
+
+/* Shake animation for iPhone feedback */
+@keyframes shake {
+0% { transform: translate(0); }
+25% { transform: translate(-5px); }
+50% { transform: translate(5px); }
+75% { transform: translate(-5px); }
+100% { transform: translate(0); }
+}
+
+.shake {
+animation: shake 0.25s;
+}
+
+.confetti-heart {
+position: fixed;
+top: -20px;
+font-size: 18px;
+color: #ff9eb5;
+animation: fall linear forwards;
+pointer-events: none;
+z-index: 1;
+}
+
+@keyframes fall {
+to {
+transform: translateY(110vh) rotate(360deg);
+opacity: 0;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h1>Will you be my Galentine?</h1>
+<div class="heart">👯‍♀️</div>
+
+<div class="buttons">
+<button id="no">No 🙁</button>
+<button id="yes">Yes 💖</button>
+</div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+
+const noMessages = [
+"Are you sure? 🥺",
+"Think again 😭",
+"Please?? 💔",
+"Last chance… maybe 😶",
+"You’re still trying?? 😵‍💫",
+"That hurts 😤",
+"WHY 😵‍💫"
+];
+
+let noCount = 0;
+let resetTimeout;
+
+function vibrate(pattern) {
+if (navigator.vibrate) navigator.vibrate(pattern); // Android only
+}
+
+function moveNoButton() {
+const x = Math.random() * 200 - 100;
+const y = Math.random() * 120 - 60;
+
+noBtn.style.transform =
+`translate(${x}px, ${y}px) rotate(${Math.random()*20-10}deg)`;
+
+noBtn.innerText =
+noMessages[Math.min(noCount, noMessages.length - 1)];
+
+noBtn.classList.remove("shake");
+void noBtn.offsetWidth; // restart animation
+noBtn.classList.add("shake");
+
+noCount++;
+vibrate(40);
+
+clearTimeout(resetTimeout);
+resetTimeout = setTimeout(() => {
+noBtn.innerText = "No 😢";
+}, 1200);
+}
+
+noBtn.addEventListener("mouseover", moveNoButton);
+noBtn.addEventListener("click", moveNoButton);
+
+function launchConfetti() {
+for (let i = 0; i < 35; i++) {
+const heart = document.createElement("div");
+heart.className = "confetti-heart";
+heart.innerText = "💗";
+heart.style.left = Math.random() * 100 + "vw";
+heart.style.animationDuration =
+2 + Math.random() * 2 + "s";
+heart.style.fontSize =
+14 + Math.random() * 14 + "px";
+
+document.body.appendChild(heart);
+setTimeout(() => heart.remove(), 4000);
+}
+}
+
+yesBtn.addEventListener("click", () => {
+yesBtn.classList.add("shake");
+vibrate([200, 100, 200]);
+launchConfetti();
+
+const phoneNumber = "918447114074"; // 👈 change this
+const message = "Yes... always💕";
+
+setTimeout(() => {
+window.location.href =
+`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+}, 700);
+});
+</script>
+
+</body>
+</html>
